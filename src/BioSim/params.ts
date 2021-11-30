@@ -71,7 +71,7 @@ class Params {
     public displayScale: number = 1;
     public agentSize: number = 2;
     public genomeAnalysisStride: number = 1; // > 0
-    public displaySampleGenomes: number = 8; // >= 0
+    public displaySampleGenomes: number = 0; // >= 0
     public genomeComparisonMethod: number = 0; // 0 = Jaro-Winkler; 1 = Hamming
     public updateGraphLog: boolean = false;
     public updateGraphLogStride: number = 16; // > 0

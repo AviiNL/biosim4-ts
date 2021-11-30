@@ -10,6 +10,7 @@ import {Signals} from "./Signals";
 import {initializeGeneration0, spawnNewGeneration} from "./SpawnNewGeneration";
 
 import {
+    CHALLENGE_CENTER_WEIGHTED,
     CHALLENGE_LOCATION_SEQUENCE,
     CHALLENGE_RADIOACTIVE_WALLS,
     CHALLENGE_RIGHT_HALF,
@@ -17,13 +18,16 @@ import {
 } from "./SurvivalCriteria";
 
 p.set({
-    challenge: CHALLENGE_RIGHT_HALF,
+    challenge: CHALLENGE_CENTER_WEIGHTED,
     sizeX: 320,
     sizeY: 180,
-    population: 250,
+    population: 1000,
     sexualReproduction: false,
-    stepsPerGeneration: 300,
-    saveVideo: false,
+    stepsPerGeneration: 300 * 6, // 60 seconds per generation at 30fps,
+    saveVideo: true,
+    displaySampleGenomes: 10,
+    maxGenerations: 500,
+    maxNumberNeurons: 250,
 });
 
 export const grid = new Grid(p.sizeX, p.sizeY);
@@ -57,19 +61,19 @@ const endOfSimStep = async (simStep: number, generation: number): Promise<void> 
 
     if (p.saveVideo &&
         ((generation % p.videoStride) == 0
-         || generation <= p.videoSaveFirstFrames
-         || (generation >= p.replaceBarrierTypeGenerationNumber
-             && generation <= p.replaceBarrierTypeGenerationNumber + p.videoSaveFirstFrames))) {
+            || generation <= p.videoSaveFirstFrames
+            || (generation >= p.replaceBarrierTypeGenerationNumber
+                && generation <= p.replaceBarrierTypeGenerationNumber + p.videoSaveFirstFrames))) {
         await saveVideoFrame(simStep, generation);
     }
-}
+};
 
 const endOfGeneration = async (generation: number) => {
     if (p.saveVideo) {
         await saveVideo(generation);
     }
     // update graph log
-}
+};
 
 const displaySensorActionReferenceCounts = () => {
 
@@ -90,7 +94,7 @@ const displaySampleGenomes = (count: number) => {
     }
 
     displaySensorActionReferenceCounts();
-}
+};
 
 export const simulator = async () => {
 
@@ -120,11 +124,13 @@ export const simulator = async () => {
         if (numberSurvivors > 0 && (generation % p.genomeAnalysisStride == 0)) {
             displaySampleGenomes(p.displaySampleGenomes);
         }
+
         if (numberSurvivors === 0) {
-            generation = 0;  // start over
-        } else {
-            generation++;
+            break;
         }
+
+        generation++;
+
     }
 
     console.log("Simulation finished");
