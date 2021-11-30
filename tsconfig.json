@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+      "moduleResolution": "Node",
+      "module": "CommonJS",
+      "target": "ESNext",
+      "outDir": "dist",
+      "sourceMap": true,
+      "strict": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "allowJs": true,
+      "esModuleInterop": true,
+      "noImplicitThis": true,
+      "noImplicitAny": false,
+      "noEmitOnError": true,
+      "preserveSymlinks": false,
+      "forceConsistentCasingInFileNames": false,
+      "jsx": "react",
+      "jsxFactory": "h",
+      "useDefineForClassFields": false,
+      "lib": [
+        "esnext"
+      ]
+    },
+    "include": [
+      "src"
+    ]
+  }
